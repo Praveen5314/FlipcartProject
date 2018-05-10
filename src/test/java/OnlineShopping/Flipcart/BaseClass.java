@@ -14,6 +14,7 @@ public class BaseClass {
 		{
 			System.setProperty("webdriver.chrome.driver", "C:\\Users\\Elcot\\eclipse-workspace\\test\\Driver\\chromedriver.exe");
 			driver=new ChromeDriver();
+			driver.manage().window().maximize();
 			driver.get(url);
 			return driver;
 			

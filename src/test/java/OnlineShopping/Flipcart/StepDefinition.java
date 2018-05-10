@@ -1,6 +1,5 @@
 package OnlineShopping.Flipcart;
 
-import java.util.List;
 import java.util.Set;
 
 import org.junit.Assert;
@@ -8,7 +7,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
-import cucumber.api.DataTable;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -23,6 +21,7 @@ public class StepDefinition extends BaseClass {
 	@Given("^The user is on amazon search page$")
 	public void the_user_is_on_amazon_search_page() {
 		launchBrowser("https://www.flipkart.com/");
+		 
 		try
 		{
 			WebElement loginSection = driver.findElement(By.xpath("/html/body/div[2]/div/div"));
@@ -49,10 +48,12 @@ public class StepDefinition extends BaseClass {
 		WebElement mobile_element;
 		Actions mouseOverAcc=new Actions(driver);
 		mouseOverAcc.moveToElement(showCategory).build().perform();
+		Thread.sleep(2000);
 		if(mobile.equalsIgnoreCase("Samsung"))
 		{
 			mobile_element = driver.findElement(By.xpath("/html/body/div[1]/div/header/div[3]/div/ul/li[1]/ul/li/ul/li[1]/ul/li[2]/a"));
 			mouseOverAcc.moveToElement(mobile_element).build().perform();
+			Thread.sleep(2000);
 			mobile_element.click();
 		}
 		else if(mobile.equalsIgnoreCase("Lenovo"))  
@@ -79,7 +80,7 @@ public class StepDefinition extends BaseClass {
 
 	@When("^The user add to cart$")
 	public void the_user_add_to_cart() throws InterruptedException {
-		
+		Thread.sleep(2000);
 		WebElement mobileLink = driver.findElement(By.xpath("/html/body/div[1]/div/div[1]/div/div/div[3]/div/div/div[1]/div[2]/div/div[1]/div/div[1]/div/div/div/a"));
 		 mobileDetails(mobileLink);
 		 parentWindowId=driver.getWindowHandle();
@@ -91,12 +92,16 @@ public class StepDefinition extends BaseClass {
 				 if(currentWindow != parentWindowId)
 					 driver.switchTo().window(currentWindow);
 			 }
-			 WebElement btnAddToCart = driver.findElement(By.xpath("/html/body/div[1]/div/div[1]/div/div/div/div[1]/div/div[1]/div[2]/ul/li[1]/button"));
+			 
+			 Thread.sleep(5000);
+			 WebElement btnAddToCart = driver.findElement(By.cssSelector("._2AkmmA._2Npkh4._2MWPVK"));
+			// WebElement btnAddToCart = driver.findElement(By.className("_2AkmmA _2Npkh4 _2MWPVK"));
+			 Thread.sleep(5000);
 			 addToCart(btnAddToCart);
 			 itemCount++;
 			 try
 			 {
-				 WebElement itemInCart = driver.findElement(By.xpath("/html/body/div[1]/div/div[1]/div/div/div[1]/div/div[2]/div/div[1]/div[1]/div[1]/a"));
+				 WebElement itemInCart = driver.findElement(By.cssSelector("._325-ji._3ROAwx"));
 				 cartItem=itemInCart.getText();
 			 }
 			 catch(Exception e)
@@ -112,9 +117,11 @@ public class StepDefinition extends BaseClass {
 		switch(itemCount)
 	      {
 		 case 1:
-			 Assert.assertTrue(cartItem.contains("samsung"));
+			 Assert.assertTrue(cartItem.contains("Samsung"));
+			 break;
 		 case 2:
-			 Assert.assertTrue(cartItem.contains("Apple"));
+			 Assert.assertTrue(cartItem.contains("Lenovo"));
+			 break;
 		 default:
 			 Assert.assertTrue(cartItem.isEmpty());
 	      }
